@@ -1,6 +1,8 @@
 package structure.skiplist;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 import java.util.random.RandomGenerator;
 
@@ -155,6 +157,20 @@ public class SkipList<E> {
 
     public boolean isEmpty() {
         return this.size == 0;
+    }
+
+    public List<E> rangeByValue(E lower, E upper) {
+        List<E> result = new ArrayList<>();
+        Node<E> searchNode = this.search(lower);
+        if(searchNode == null) return result;
+        while(searchNode.next != null) {
+            if(comparator.compare(searchNode.value, upper) <= 0) {
+                result.add(searchNode.value);
+            }else  {
+                break;
+            }
+        }
+        return result;
     }
 
     public void traverse() {
