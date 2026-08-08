@@ -116,8 +116,45 @@ public class SkipList<E> {
         }
     }
 
-    public Node<E> search(E value) {
+    public boolean contains(E value) {
+        return this.search(value) != null;
+    }
+
+    public int count(E value) {
+        Node<E> searchNode = this.search(value);
+        var count = searchNode == null ? 0 : searchNode.count;
+        return count;
+    }
+
+    private Node<E> search(E value) {
+        var searchLevel = this.currentLevel;
+        Node<E> currentNode = this.head;
+        for(var i = searchLevel; i > -1; i--) {
+            Node<E> prev = currentNode;
+            Node<E> next = currentNode.next[i];
+            if(next == null) continue;
+            while(next != null) {
+                int compared = compareTo(next.value, value);
+                if(compared < 0){
+                    prev = next;
+                    next = next.next[i];
+                }else if (compared == 0) {
+                    return next;
+                }else {
+                    break;
+                }
+            }
+            currentNode = prev;
+        }
         return null;
+    }
+
+    public int size() {
+        return this.size;
+    }
+
+    public boolean isEmpty() {
+        return this.size == 0;
     }
 
     public void traverse() {

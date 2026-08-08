@@ -1,8 +1,6 @@
 import structure.skiplist.SkipList;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.random.RandomGenerator;
 
 public class MainClass {
@@ -24,9 +22,20 @@ public class MainClass {
             skipList.insert(value);
             skipList.traverse();
         }
+
+        Set<Integer> set = new HashSet<>();
+        set.addAll(nums);
+        set.stream().sorted()
+            .forEach((value) -> {
+            int v_count = skipList.count(value);
+            System.out.println(value+" count = "+v_count);
+        });
+
         for (var i = nums.size()-1; i > -1; i--) {
             int value = nums.get(i);
-            skipList.delete(value);
+            if (skipList.contains(value)) {
+                skipList.delete(value);
+            }
             skipList.traverse();
         }
     }
